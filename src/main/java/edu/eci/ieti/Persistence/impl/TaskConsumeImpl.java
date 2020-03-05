@@ -8,42 +8,67 @@ package edu.eci.ieti.Persistence.impl;
 import edu.eci.ieti.Persistence.TaskConsume;
 import edu.eci.ieti.model.Task;
 import edu.eci.ieti.model.User;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author danie
  */
 public class TaskConsumeImpl implements TaskConsume{
+    
+    private HashMap<String,Task> tareas = new HashMap<>();
 
     @Override
     public List<Task> geAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<Task>res = new ArrayList<>();
+        for (Map.Entry<String, Task> entrySet : tareas.entrySet()) {
+            Task value = entrySet.getValue();
+            res.add(value);
+        }
+        return res;
     }
 
     @Override
     public Task getById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return tareas.get(id);
     }
 
     @Override
     public List<Task> getByUserId(String userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       ArrayList<Task>res = new ArrayList<>();
+        for (Map.Entry<String, Task> entrySet : tareas.entrySet()) {
+            Task value = entrySet.getValue();
+            if(value.getResponsable().getUserId().equals(userId)){
+                res.add(value);
+            }
+            
+        }
+        return res;
     }
 
     @Override
     public Task assignTaskToUser(String taskId, User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Task ts = tareas.get(taskId);
+        ts.setResponsable(user);
+        return ts;
     }
 
     @Override
     public void remove(String taskId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (tareas.get(taskId) != null){
+            tareas.remove(taskId);
+        }
     }
 
     @Override
     public Task update(Task task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(tareas.get(task.getTaskId())!= null){
+            tareas.replace(task.getTaskId(), task);
+        }
+        return task;
     }
     
 }

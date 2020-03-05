@@ -6,44 +6,58 @@
 package edu.eci.ieti.Persistence.impl;
 
 import edu.eci.ieti.Persistence.TaskConsume;
+import edu.eci.ieti.Persistence.UserConsume;
 import edu.eci.ieti.model.Task;
 import edu.eci.ieti.model.User;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author danie
  */
-public class UserConsumeImpl implements TaskConsume{
+public class UserConsumeImpl implements UserConsume {
+
+    private HashMap<String, User> usuarios = new HashMap<>();
 
     @Override
-    public List<Task> geAll() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<User> getAll() {
+        ArrayList<User> res = new ArrayList<>();
+        for (Map.Entry<String, User> entrySet : usuarios.entrySet()) {
+            User value = entrySet.getValue();
+            res.add(value);
+        }
+        return (List<User>)res;
     }
 
     @Override
-    public Task getById(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User getById(String id) {
+        return usuarios.get(id);
     }
 
     @Override
-    public List<Task> getByUserId(String userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void remove(String userId) {
+        if (usuarios.get(userId) != null) {
+            usuarios.remove(userId);
+        }
     }
 
     @Override
-    public Task assignTaskToUser(String taskId, User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User update(User user) {
+        if (usuarios.get(user.getUserId()) != null) {
+            usuarios.replace(user.getUserId(), user);
+        }
+        return user;
     }
 
     @Override
-    public void remove(String taskId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User create(User user) {
+        usuarios.put(user.getUserId(), user);
+        return user;
     }
 
-    @Override
-    public Task update(Task task) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
+
 }
